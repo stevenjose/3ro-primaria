@@ -4,228 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Portal Educativo 3º Primaria</title>
-    <!-- Fuente estilo Terminal / Gamer -->
+    <!-- Fuentes y FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --neon-cyan: #00f3ff;
-            --neon-pink: #ff00ea;
-            --neon-green: #22c55e;
-            --neon-yellow: #f59e0b;
-            --bg-dark: #050505;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Fredoka', sans-serif;
-            background-color: var(--bg-dark);
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
-            cursor: crosshair;
-        }
-
-        /* --- EFECTO MONITOR CRT --- */
-        .scanlines {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.04));
-            background-size: 100% 2px, 3px 100%;
-            z-index: 9999;
-            pointer-events: none;
-        }
-
-        .main-container {
-            width: 100%;
-            max-width: 900px;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* --- CABECERA ARCADE --- */
-        .arcade-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            border: 2px dashed var(--neon-cyan);
-            background: rgba(0, 243, 255, 0.03);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.15);
-            border-radius: 16px;
-            position: relative;
-        }
-
-        .version-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: linear-gradient(135deg, #0ea5e9, #6366f1);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: #fff;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.85rem;
-            box-shadow: 0 0 10px rgba(14, 165, 233, 0.4);
-        }
-
-        .arcade-title {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            color: var(--neon-cyan);
-            text-shadow: 0 0 10px var(--neon-cyan);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .arcade-subtitle {
-            font-size: 1.1rem;
-            color: #94a3b8;
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .arcade-subtitle strong { color: var(--neon-pink); }
-
-        /* --- SECCIONES --- */
-        .section-heading {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1.8rem;
-            color: var(--neon-yellow);
-            margin: 30px 0 20px 0;
-            text-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
-            border-bottom: 2px dashed var(--neon-yellow);
-            padding-bottom: 8px;
-        }
-
-        /* --- CALENDARIO DE EXÁMENES --- */
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .calendar-card {
-            background: rgba(15, 23, 42, 0.8);
-            border: 2px solid var(--neon-yellow);
-            border-radius: 14px;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
-        }
-
-        .cal-date-box {
-            background: rgba(245, 158, 11, 0.15);
-            border: 1px solid var(--neon-yellow);
-            padding: 10px;
-            border-radius: 10px;
-            text-align: center;
-            font-family: 'Share Tech Mono', monospace;
-            font-weight: bold;
-            color: var(--neon-yellow);
-            min-width: 80px;
-        }
-
-        .cal-info h4 { font-size: 1.1rem; margin-bottom: 3px; color: #fff; }
-        .cal-info p { font-size: 0.88rem; color: #94a3b8; }
-
-        /* --- GRID DE MATERIAS --- */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
-
-        .subject-card {
-            background: rgba(15, 23, 42, 0.7);
-            border: 2px solid var(--neon-cyan);
-            border-radius: 16px;
-            padding: 25px 20px;
-            text-align: center;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
-        }
-
-        .subject-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background: var(--neon-cyan);
-            border-radius: 16px 16px 0 0;
-        }
-
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: var(--neon-cyan);
-        }
-
-        .card-title {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-        }
-
-        .card-desc {
-            font-size: 0.95rem;
-            color: #cbd5e1;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .links-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .btn-play {
-            display: block;
-            background: transparent;
-            color: #fff;
-            border: 2px solid currentColor;
-            padding: 9px 15px;
-            border-radius: 12px;
-            font-family: 'Share Tech Mono', monospace;
-            font-weight: bold;
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: all 0.2s;
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.1);
-        }
-
-        .btn-play:hover { background: currentColor; color: #000; box-shadow: 0 0 15px currentColor; }
-
-        /* --- PIE DE PÁGINA --- */
-        .arcade-footer {
-            margin-top: 40px;
-            text-align: center;
-            padding: 20px;
-            border-top: 1px dashed rgba(255, 255, 255, 0.2);
-            color: #94a3b8;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        .arcade-footer strong { color: var(--neon-cyan); }
-        .contact-email { color: var(--neon-yellow); text-decoration: none; }
-        .contact-email:hover { text-decoration: underline; }
-    </style>
+    <!-- CSS Externo -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -234,78 +17,34 @@
     <div class="main-container">
         <!-- Cabecera -->
         <header class="arcade-header">
-            <div class="version-badge">🚀 v1.1</div>
+            <div class="version-badge">🚀 v1.2</div>
             <h1 class="arcade-title">🎮 Portal Educativo 3º Primaria</h1>
             <p class="arcade-subtitle">
-                ¡Bienvenidos familias! 👋 Espacio centralizado con <strong>juegos interactivos, guías y calendario de exámenes</strong> para preparar las asignaturas del curso.
+                ¡Bienvenidos familias! 👋 Espacio centralizado con <strong>juegos interactivos, guías, calendario de exámenes y repositorio de documentos</strong> para preparar las asignaturas del curso.
             </p>
         </header>
 
         <!-- Sección Calendario Dinámico -->
         <h2 class="section-heading">> CALENDARIO_EXÁMENES</h2>
         <div class="calendar-grid" id="calendar-container">
-            <!-- Se carga automáticamente desde examenes.json -->
+            <!-- Cargado dinámicamente desde examenes.json -->
         </div>
 
         <!-- Sección Materias Dinámica -->
         <h2 class="section-heading">> MATERIAS_DISPONIBLES</h2>
         <div class="cards-grid" id="cards-container">
-            <!-- Se carga automáticamente desde materias.json -->
+            <!-- Cargado dinámicamente desde materias.json -->
         </div>
 
         <!-- Pie de página -->
         <footer class="arcade-footer">
             <p>Creado con dedicación por <strong>José Gregorio López</strong></p>
             <p>¿Tienes sugerencias o comentarios? Escríbeme a: <a href="mailto:lopezajoseg@gmail.com" class="contact-email">lopezajoseg@gmail.com</a></p>
-            <p style="margin-top: 10px; font-size: 0.8rem; color: #64748b;">Portal Educativo — <strong>Versión 1.1</strong> • Todos los enlaces se abren en una pestaña independiente.</p>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: #64748b;">Portal Educativo — <strong>Versión 1.2</strong> • Todos los enlaces se abren en una pestaña independiente.</p>
         </footer>
     </div>
 
-    <script>
-        // Cargar Calendario desde examenes.json
-        fetch('examenes.json')
-            .then(res => res.json())
-            .then(examenes => {
-                const calContainer = document.getElementById('calendar-container');
-                calContainer.innerHTML = examenes.map(ex => `
-                    <div class="calendar-card" style="border-color: ${ex.color || '#f59e0b'}">
-                        <div class="cal-date-box" style="border-color: ${ex.color || '#f59e0b'}; color: ${ex.color || '#f59e0b'}; background: ${ex.color ? ex.color + '15' : 'rgba(245,158,11,0.15)'}">${ex.fecha}</div>
-                        <div class="cal-info">
-                            <h4>${ex.titulo}</h4>
-                            <p>Asignatura: <strong>${ex.materia}</strong></p>
-                        </div>
-                    </div>
-                `).join('');
-            }).catch(() => {
-                document.getElementById('calendar-container').innerHTML = '<p style="color:#94a3b8; font-size:0.9rem;">No hay exámenes programados próximamente.</p>';
-            });
-
-        // Cargar Materias desde materias.json
-        fetch('materias.json')
-            .then(res => res.json())
-            .then(materias => {
-                const cardsContainer = document.getElementById('cards-container');
-                cardsContainer.innerHTML = materias.map(mat => {
-                    const color = mat.colorVar || 'var(--neon-cyan)';
-                    const enlacesHTML = mat.enlaces.map(link => `
-                        <a href="${link.url}" target="_blank" class="btn-play" style="color: ${color}; border-color: ${color};">${link.texto}</a>
-                    `).join('');
-
-                    return `
-                        <div class="subject-card" style="border-color: ${color}">
-                            <div style="position: absolute; top:0; left:0; width:100%; height:4px; background:${color}; border-radius:16px 16px 0 0;"></div>
-                            <div>
-                                <div class="card-icon" style="color: ${color}"><i class="${mat.icono}"></i></div>
-                                <h3 class="card-title">${mat.titulo}</h3>
-                                <p class="card-desc">${mat.descripcion}</p>
-                            </div>
-                            <div class="links-group">
-                                ${enlacesHTML}
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            });
-    </script>
+    <!-- Script Externo -->
+    <script src="main.js"></script>
 </body>
 </html>
