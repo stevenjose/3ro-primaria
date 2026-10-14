@@ -214,3 +214,27 @@ body {
 .arcade-footer strong { color: var(--neon-cyan); }
 .contact-email { color: var(--neon-yellow); text-decoration: none; }
 .contact-email:hover { text-decoration: underline; }
+/* --- ESTILOS PARA EXÁMENES PASADOS / DESHABILITADOS --- */
+.calendar-card.pasado {
+    opacity: 0.45;
+    border-color: #475569 !important;
+    background: rgba(15, 23, 42, 0.4);
+    filter: grayscale(40%);
+}
+
+.calendar-card.pasado .cal-date-box {
+    background: rgba(71, 85, 105, 0.2) !important;
+    border-color: #475569 !important;
+    color: #94a3b8 !important;
+}
+
+.badge-pasado {
+    display: inline-block;
+    background: #334155;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-top: 4px;
+    font-family: 'Share Tech Mono', monospace;
+}
