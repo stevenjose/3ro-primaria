@@ -1,14 +1,23 @@
-// Configuración de Versión
+// ==========================================
+// CONTROL DE VERSIÓN (¡Cámbiala aquí y se actualiza sola en todo el HTML!)
+// ==========================================
 const APP_VERSION = "1.3";
-document.getElementById('page-title').textContent = `Portal Educativo 3º Primaria v${APP_VERSION}`;
 
-// Cargar Calendario desde examenes.json
+// Inyectar versión automáticamente en el HTML
+document.getElementById('page-title').textContent = `Portal Educativo 3º Primaria v${APP_VERSION}`;
+document.getElementById('version-badge-text').textContent = `v${APP_VERSION}`;
+document.getElementById('version-footer-text').textContent = APP_VERSION;
+
+
+// ==========================================
+// CARGAR CALENDARIO DESDE examenes.json
+// ==========================================
 fetch('examenes.json')
     .then(res => res.json())
     .then(examenes => {
         const calContainer = document.getElementById('calendar-container');
         
-        // Opcional: Ordenar para que los activos salgan primero y los pasados al final
+        // Ordenar para que los activos salgan primero y los pasados al final
         examenes.sort((a, b) => (a.estado === 'pasado') ? 1 : -1);
 
         calContainer.innerHTML = examenes.map(ex => {
@@ -32,7 +41,10 @@ fetch('examenes.json')
         document.getElementById('calendar-container').innerHTML = '<p style="color:#94a3b8; font-size:0.9rem;">No hay exámenes programados próximamente.</p>';
     });
 
-// Cargar Materias desde materias.json
+
+// ==========================================
+// CARGAR MATERIAS DESDE materias.json
+// ==========================================
 fetch('materias.json')
     .then(res => res.json())
     .then(materias => {
