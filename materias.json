@@ -1,0 +1,33 @@
+[
+  {
+    "id": "english",
+    "titulo": "Inglés",
+    "icono": "fa-solid fa-language",
+    "colorVar": "var(--neon-cyan)",
+    "descripcion": "Repaso de vocabulario con Robo-Teacher 3D y la Guía Interactiva de Gramática (*It is vs They are*).",
+    "enlaces": [
+      { "texto": "▶ JUGAR TEST", "url": "https://stevenjose.github.io/examen-one-ingles/" },
+      { "texto": "📖 GUÍA GRAMÁTICA", "url": "https://stevenjose.github.io/gram-tica/" }
+    ]
+  },
+  {
+    "id": "maths",
+    "titulo": "Matemáticas",
+    "icono": "fa-solid fa-calculator",
+    "colorVar": "var(--neon-green)",
+    "descripcion": "Jueguecito interactivo para practicar las tablas de multiplicar del 1 al 10 de forma ágil y entretenida.",
+    "enlaces": [
+      { "texto": "▶ TABLAS DE MULTIPLICAR", "url": "https://stevenjose.github.io/tabla-multiplicar/" }
+    ]
+  },
+  {
+    "id": "medi",
+    "titulo": "Medi",
+    "icono": "fa-solid fa-earth-americas",
+    "colorVar": "var(--neon-pink)",
+    "descripcion": "Guías y test interactivos de la Unidad 3 para afianzar conceptos clave de forma visual y sencilla.",
+    "enlaces": [
+      { "texto": "▶ ACCEDER UNIDAD 3", "url": "https://stevenjose.github.io/unidad-3-medi-pro/" }
+    ]
+  }
+]
