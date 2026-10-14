@@ -29,5 +29,15 @@
     "enlaces": [
       { "texto": "▶ ACCEDER UNIDAD 3", "url": "https://stevenjose.github.io/unidad-3-medi-pro/" }
     ]
+  },
+  {
+    "id": "drive",
+    "titulo": "Documentos del Curso",
+    "icono": "fa-solid fa-folder-open",
+    "colorVar": "var(--neon-yellow)",
+    "descripcion": "Carpeta compartida en la nube para consultar, subir y descargar fichas, esquemas y materiales de clase.",
+    "enlaces": [
+      { "texto": "📂 ABRIR CARPETA DRIVE", "url": "https://drive.google.com/drive/folders/1i1NMoN6iZmiviaS9UngoK6qGMkx2pgeY" }
+    ]
   }
 ]
