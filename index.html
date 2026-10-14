@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Juegos Educativos - 3º de Primaria</title>
+    <title id="page-title">Portal Educativo 3º Primaria</title>
     <!-- Fuente estilo Terminal / Gamer -->
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -32,7 +32,7 @@
             cursor: crosshair;
         }
 
-        /* --- EFECTO MONITOR CRT (Líneas de escaneo) --- */
+        /* --- EFECTO MONITOR CRT --- */
         .scanlines {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -59,6 +59,21 @@
             background: rgba(0, 243, 255, 0.03);
             box-shadow: 0 0 20px rgba(0, 243, 255, 0.15);
             border-radius: 16px;
+            position: relative;
+        }
+
+        .version-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #0ea5e9, #6366f1);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.4);
         }
 
         .arcade-title {
@@ -78,11 +93,9 @@
             line-height: 1.6;
         }
 
-        .arcade-subtitle strong {
-            color: var(--neon-pink);
-        }
+        .arcade-subtitle strong { color: var(--neon-pink); }
 
-        /* --- SECCIÓN DE MATERIAS (GRID) --- */
+        /* --- SECCIONES --- */
         .section-heading {
             font-family: 'Share Tech Mono', monospace;
             font-size: 1.8rem;
@@ -93,6 +106,41 @@
             padding-bottom: 8px;
         }
 
+        /* --- CALENDARIO DE EXÁMENES --- */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid var(--neon-yellow);
+            border-radius: 14px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
+        }
+
+        .cal-date-box {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid var(--neon-yellow);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            color: var(--neon-yellow);
+            min-width: 80px;
+        }
+
+        .cal-info h4 { font-size: 1.1rem; margin-bottom: 3px; color: #fff; }
+        .cal-info p { font-size: 0.88rem; color: #94a3b8; }
+
+        /* --- GRID DE MATERIAS --- */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -106,7 +154,6 @@
             padding: 25px 20px;
             text-align: center;
             position: relative;
-            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -118,19 +165,7 @@
             position: absolute;
             top: 0; left: 0; width: 100%; height: 4px;
             background: var(--neon-cyan);
-            box-shadow: 0 0 8px var(--neon-cyan);
             border-radius: 16px 16px 0 0;
-        }
-
-        .subject-card.maths { border-color: var(--neon-green); }
-        .subject-card.maths::before { background: var(--neon-green); box-shadow: 0 0 8px var(--neon-green); }
-
-        .subject-card.medi { border-color: var(--neon-pink); }
-        .subject-card.medi::before { background: var(--neon-pink); box-shadow: 0 0 8px var(--neon-pink); }
-
-        .subject-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
         }
 
         .card-icon {
@@ -138,8 +173,6 @@
             margin-bottom: 15px;
             color: var(--neon-cyan);
         }
-        .maths .card-icon { color: var(--neon-green); }
-        .medi .card-icon { color: var(--neon-pink); }
 
         .card-title {
             font-family: 'Share Tech Mono', monospace;
@@ -155,29 +188,28 @@
             line-height: 1.5;
         }
 
+        .links-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
         .btn-play {
-            display: inline-block;
+            display: block;
             background: transparent;
             color: #fff;
             border: 2px solid currentColor;
-            padding: 10px 20px;
+            padding: 9px 15px;
             border-radius: 12px;
             font-family: 'Share Tech Mono', monospace;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 0.95rem;
             text-decoration: none;
             transition: all 0.2s;
             box-shadow: inset 0 0 10px rgba(255,255,255,0.1);
         }
 
-        .subject-card.english .btn-play { color: var(--neon-cyan); border-color: var(--neon-cyan); }
-        .subject-card.english .btn-play:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 15px var(--neon-cyan); }
-
-        .subject-card.maths .btn-play { color: var(--neon-green); border-color: var(--neon-green); }
-        .subject-card.maths .btn-play:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 15px var(--neon-green); }
-
-        .subject-card.medi .btn-play { color: var(--neon-pink); border-color: var(--neon-pink); }
-        .subject-card.medi .btn-play:hover { background: var(--neon-pink); color: #000; box-shadow: 0 0 15px var(--neon-pink); }
+        .btn-play:hover { background: currentColor; color: #000; box-shadow: 0 0 15px currentColor; }
 
         /* --- PIE DE PÁGINA --- */
         .arcade-footer {
@@ -190,17 +222,9 @@
             line-height: 1.6;
         }
 
-        .arcade-footer strong {
-            color: var(--neon-cyan);
-        }
-
-        .contact-email {
-            color: var(--neon-yellow);
-            text-decoration: none;
-        }
-        .contact-email:hover {
-            text-decoration: underline;
-        }
+        .arcade-footer strong { color: var(--neon-cyan); }
+        .contact-email { color: var(--neon-yellow); text-decoration: none; }
+        .contact-email:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -210,60 +234,78 @@
     <div class="main-container">
         <!-- Cabecera -->
         <header class="arcade-header">
+            <div class="version-badge">🚀 v1.1</div>
             <h1 class="arcade-title">🎮 Portal Educativo 3º Primaria</h1>
             <p class="arcade-subtitle">
-                ¡Bienvenidos familias! 👋 Espacio centralizado con <strong>juegos interactivos y guías de repaso</strong> para practicar de forma divertida sin frustraciones y preparar los exámenes del curso.
+                ¡Bienvenidos familias! 👋 Espacio centralizado con <strong>juegos interactivos, guías y calendario de exámenes</strong> para preparar las asignaturas del curso.
             </p>
         </header>
 
-        <!-- Bloque de Materias -->
-        <h2 class="section-heading">> MATERIAS_DISPONIBLES</h2>
-
-        <div class="cards-grid">
-            <!-- INGLÉS -->
-            <div class="subject-card english">
-                <div>
-                    <div class="card-icon"><i class="fa-solid fa-language"></i></div>
-                    <h3 class="card-title">Inglés</h3>
-                    <p class="card-desc">Repaso completo de días, números 1-20, animales y gramática (*It is / Has got / Can*) con Robo-Teacher 3D y audio.</p>
-                </div>
-                <div>
-                    <a href="https://stevenjose.github.io/examen-one-ingles/" target="_blank" class="btn-play">▶ JUGAR / TEST</a>
-                </div>
-            </div>
-
-            <!-- MATEMÁTICAS -->
-            <div class="subject-card maths">
-                <div>
-                    <div class="card-icon"><i class="fa-solid fa-calculator"></i></div>
-                    <h3 class="card-title">Matemáticas</h3>
-                    <p class="card-desc">Jueguecito interactivo para practicar las tablas de multiplicar del 1 al 10 de forma ágil y entretenida.</p>
-                </div>
-                <div>
-                    <a href="https://stevenjose.github.io/tabla-multiplicar/" target="_blank" class="btn-play">▶ PRACTICAR</a>
-                </div>
-            </div>
-
-            <!-- CONOCIMIENTO DEL MEDIO -->
-            <div class="subject-card medi">
-                <div>
-                    <div class="card-icon"><i class="fa-solid fa-earth-americas"></i></div>
-                    <h3 class="card-title">Conocimiento del Medio</h3>
-                    <p class="card-desc">Guías y test interactivos de la Unidad 3 para afianzar conceptos clave de forma visual y sencilla.</p>
-                </div>
-                <div>
-                    <a href="https://stevenjose.github.io/unidad-3-medi-pro/" target="_blank" class="btn-play">▶ ACCEDER</a>
-                </div>
-            </div>
+        <!-- Sección Calendario Dinámico -->
+        <h2 class="section-heading">> CALENDARIO_EXÁMENES</h2>
+        <div class="calendar-grid" id="calendar-container">
+            <!-- Se carga automáticamente desde examenes.json -->
         </div>
 
-        <!-- Pie de página con tus datos -->
+        <!-- Sección Materias Dinámica -->
+        <h2 class="section-heading">> MATERIAS_DISPONIBLES</h2>
+        <div class="cards-grid" id="cards-container">
+            <!-- Se carga automáticamente desde materias.json -->
+        </div>
+
+        <!-- Pie de página -->
         <footer class="arcade-footer">
             <p>Creado con dedicación por <strong>José Gregorio López</strong></p>
             <p>¿Tienes sugerencias o comentarios? Escríbeme a: <a href="mailto:lopezajoseg@gmail.com" class="contact-email">lopezajoseg@gmail.com</a></p>
-            <p style="margin-top: 10px; font-size: 0.8rem; color: #64748b;">© 2026 — Todos los enlaces se abren en una pestaña independiente.</p>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: #64748b;">Portal Educativo — <strong>Versión 1.1</strong> • Todos los enlaces se abren en una pestaña independiente.</p>
         </footer>
     </div>
 
+    <script>
+        // Cargar Calendario desde examenes.json
+        fetch('examenes.json')
+            .then(res => res.json())
+            .then(examenes => {
+                const calContainer = document.getElementById('calendar-container');
+                calContainer.innerHTML = examenes.map(ex => `
+                    <div class="calendar-card" style="border-color: ${ex.color || '#f59e0b'}">
+                        <div class="cal-date-box" style="border-color: ${ex.color || '#f59e0b'}; color: ${ex.color || '#f59e0b'}; background: ${ex.color ? ex.color + '15' : 'rgba(245,158,11,0.15)'}">${ex.fecha}</div>
+                        <div class="cal-info">
+                            <h4>${ex.titulo}</h4>
+                            <p>Asignatura: <strong>${ex.materia}</strong></p>
+                        </div>
+                    </div>
+                `).join('');
+            }).catch(() => {
+                document.getElementById('calendar-container').innerHTML = '<p style="color:#94a3b8; font-size:0.9rem;">No hay exámenes programados próximamente.</p>';
+            });
+
+        // Cargar Materias desde materias.json
+        fetch('materias.json')
+            .then(res => res.json())
+            .then(materias => {
+                const cardsContainer = document.getElementById('cards-container');
+                cardsContainer.innerHTML = materias.map(mat => {
+                    const color = mat.colorVar || 'var(--neon-cyan)';
+                    const enlacesHTML = mat.enlaces.map(link => `
+                        <a href="${link.url}" target="_blank" class="btn-play" style="color: ${color}; border-color: ${color};">${link.texto}</a>
+                    `).join('');
+
+                    return `
+                        <div class="subject-card" style="border-color: ${color}">
+                            <div style="position: absolute; top:0; left:0; width:100%; height:4px; background:${color}; border-radius:16px 16px 0 0;"></div>
+                            <div>
+                                <div class="card-icon" style="color: ${color}"><i class="${mat.icono}"></i></div>
+                                <h3 class="card-title">${mat.titulo}</h3>
+                                <p class="card-desc">${mat.descripcion}</p>
+                            </div>
+                            <div class="links-group">
+                                ${enlacesHTML}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            });
+    </script>
 </body>
 </html>
