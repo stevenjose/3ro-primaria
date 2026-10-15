@@ -1,50 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Portal Educativo 3º Primaria</title>
-    <!-- Fuentes y FontAwesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- CSS Externo -->
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <div class="scanlines"></div>
-
-    <div class="main-container">
-        <!-- Cabecera -->
-        <header class="arcade-header">
-            <div class="version-badge">🚀 <span id="version-badge-text">v--</span></div>
-            <h1 class="arcade-title">🎮 Portal Educativo 3º Primaria</h1>
-            <p class="arcade-subtitle">
-                ¡Bienvenidos familias! 👋 Espacio centralizado con <strong>juegos interactivos, guías, calendario de exámenes y repositorio de documentos</strong> para preparar las asignaturas del curso.
-            </p>
-        </header>
-
-        <!-- Sección Calendario Dinámico -->
-        <h2 class="section-heading">> CALENDARIO_EXÁMENES</h2>
-        <div class="calendar-grid" id="calendar-container">
-            <!-- Cargado dinámicamente desde examenes.json -->
-        </div>
-
-        <!-- Sección Materias Dinámica -->
-        <h2 class="section-heading">> MATERIAS_DISPONIBLES</h2>
-        <div class="cards-grid" id="cards-container">
-            <!-- Cargado dinámicamente desde materias.json -->
-        </div>
-
-        <!-- Pie de página -->
-        <footer class="arcade-footer">
-            <p>Creado con dedicación por <strong>José Gregorio López</strong></p>
-            <p>¿Tienes sugerencias o comentarios? Escríbeme a: <a href="mailto:lopezajoseg@gmail.com" class="contact-email">lopezajoseg@gmail.com</a></p>
-            <p style="margin-top: 10px; font-size: 0.8rem; color: #64748b;">Portal Educativo — <strong>Versión <span id="version-footer-text">--</span></strong> • Todos los enlaces se abren en una pestaña independiente.</p>
-        </footer>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="page-title">Splat-Portal 3º Primaria</title>
+    <!-- Fuentes Pixel + Cartoon Urbano -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Manchas de tinta decorativas en el fondo -->
+    <div class="ink-bg-layer" id="ink-bg-layer">
+      <div class="static-splat splat-yellow"></div>
+      <div class="static-splat splat-purple"></div>
+      <div class="static-splat splat-cyan"></div>
     </div>
 
-    <!-- Script Externo -->
+    <div class="main-container">
+      <!-- BARRA SUPERIOR: TANQUE DE TINTA (TURF METER) -->
+      <div class="splat-hud">
+        <div
+          class="ink-tank-box"
+          onclick="shootRandomInk(event)"
+          title="¡Haz clic para disparar tinta!"
+        >
+          <span class="squid-icon">🦑</span>
+          <div class="tank-info">
+            <span class="tank-label">TERRITORIO PINTADO</span>
+            <div class="tank-bar-bg">
+              <div class="tank-bar-fill" id="ink-fill"></div>
+            </div>
+          </div>
+          <span class="ink-percent"><span id="ink-val">45</span>%</span>
+        </div>
+
+        <div class="hud-right">
+          <div class="version-sticker">
+            🎨 SPLAT <span id="version-badge-text">v--</span>
+          </div>
+          <button
+            class="sound-btn"
+            id="sound-btn"
+            onclick="toggleSound()"
+            title="Sonidos Splat ON/OFF"
+          >
+            <i class="fa-solid fa-volume-high" id="sound-icon"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- CABECERA ESTILO SPLATOON 3 (TINTELIA) -->
+      <header class="splat-header" onclick="shootRandomInk(event)">
+        <div class="graffiti-tag">⚡ TURF WAR: CURSO 3º PRIMARIA ⚡</div>
+        <h1 class="splat-title">SPLAT-PORTAL 3º</h1>
+        <p class="splat-subtitle">
+          ¡Bienvenidos familias y cefalópodos! 🐙 Pinta la pantalla haciendo
+          clic, revisa las <strong>fechas de combate (exámenes)</strong> y entra
+          a las misiones de cada asignatura.
+        </p>
+      </header>
+
+      <!-- SECCIÓN CALENDARIO (STAGE ROTATION / PRÓXIMOS COMBATES) -->
+      <div class="section-tape tape-yellow">
+        <i class="fa-solid fa-calendar-check"></i>
+        <h2>ROTACIÓN DE ESCENARIOS (EXÁMENES)</h2>
+      </div>
+      <div class="calendar-grid" id="calendar-container">
+        <!-- Cargado desde examenes.json -->
+      </div>
+
+      <!-- SECCIÓN MATERIAS (ARMAMENTO / MISIONES) -->
+      <div class="section-tape tape-pink">
+        <i class="fa-solid fa-gamepad"></i>
+        <h2>ELIGE TU ARMA DE REPASO (MATERIAS)</h2>
+      </div>
+      <div class="cards-grid" id="cards-container">
+        <!-- Cargado desde materias.json -->
+      </div>
+
+      <!-- PIE DE PÁGINA URBANO -->
+      <footer class="splat-footer">
+        <p>🦑 Diseñado en Tintelia por <strong>José Gregorio López</strong></p>
+        <p>
+          ¿Sugerencias o nuevas armas de estudio? Escríbeme a:
+          <a href="mailto:lopezajoseg@gmail.com" class="contact-email"
+            >lopezajoseg@gmail.com</a
+          >
+        </p>
+        <p class="footer-meta">
+          Splat-Portal Educativo —
+          <strong>Versión <span id="version-footer-text">--</span></strong> •
+          ¡No te quedes sin tinta!
+        </p>
+      </footer>
+    </div>
+
     <script src="main.js"></script>
-</body>
+  </body>
 </html>
