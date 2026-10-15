@@ -397,34 +397,35 @@ fetch("materias.json")
   // ==========================================
 // REGISTRO SERVICE WORKER Y BOTÓN INSTALAR PWA
 // ==========================================
+// ==========================================
+// CONTROL DE INSTALACIÓN PWA MEJORADO
+// ==========================================
 let deferredPrompt = null;
 
 window.addEventListener('beforeinstallprompt', (e) => {
-    // Previene que el navegador muestre su banner automático por defecto
     e.preventDefault();
     deferredPrompt = e;
-    
-    // Muestra tu botón flotante personalizado estilo Splatoon
-    const installBtn = document.getElementById('install-btn');
-    if (installBtn) {
-        installBtn.style.display = 'flex';
-    }
 });
 
 function installPWA() {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    
-    deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-            console.log('El usuario aceptó instalar la PWA');
-        }
-        deferredPrompt = null;
-        document.getElementById('install-btn').style.display = 'none';
-    });
+    if (deferredPrompt) {
+        // Si el navegador tiene listo el instalador nativo, lo lanzamos
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('El usuario aceptó instalar la PWA');
+            }
+            deferredPrompt = null;
+        });
+    } else {
+        // Si ya está instalada o el navegador no lanza el prompt directo, 
+        // mostramos un aviso guía muy útil para familias
+        alert("💡 ¡Para instalar la app o crear un acceso directo:\n\n• En Móvil: Pulsa el menú (los 3 puntitos) de tu navegador y selecciona 'Añadir a la pantalla de inicio'.\n• En Ordenador: Haz clic en el icono de instalación 🖥️ en la barra de direcciones o en el menú de opciones del navegador.");
+    }
 }
-
-// Registrar el Service Worker en segundo plano
+  // ==========================================
+// REGISTRO SERVICE WORKER
+// ============================================
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
