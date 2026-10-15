@@ -6,8 +6,14 @@
     "colorVar": "var(--neon-cyan)",
     "descripcion": "Repaso de vocabulario con Robo-Teacher 3D y la Guía Interactiva de Gramática (*It is vs They are*).",
     "enlaces": [
-      { "texto": "▶ JUGAR TEST", "url": "https://stevenjose.github.io/examen-one-ingles/" },
-      { "texto": "📖 GUÍA GRAMÁTICA", "url": "https://stevenjose.github.io/gram-tica/" }
+      {
+        "texto": "▶ JUGAR TEST",
+        "url": "https://stevenjose.github.io/examen-one-ingles/"
+      },
+      {
+        "texto": "📖 GUÍA GRAMÁTICA",
+        "url": "https://stevenjose.github.io/gram-tica/"
+      }
     ]
   },
   {
@@ -17,7 +23,14 @@
     "colorVar": "var(--neon-green)",
     "descripcion": "Jueguecito interactivo para practicar las tablas de multiplicar del 1 al 10 de forma ágil y entretenida.",
     "enlaces": [
-      { "texto": "▶ TABLAS DE MULTIPLICAR", "url": "https://stevenjose.github.io/tabla-multiplicar/" }
+      {
+        "texto": "▶ TABLAS DE MULTIPLICAR",
+        "url": "https://stevenjose.github.io/tabla-multiplicar/"
+      },
+      {
+        "texto": "✏️ RESTAS LLEVANDO",
+        "url": "https://stevenjose.github.io/mate-resta/"
+      }
     ]
   },
   {
@@ -27,7 +40,10 @@
     "colorVar": "var(--neon-pink)",
     "descripcion": "Guías y test interactivos de la Unidad 3 para afianzar conceptos clave de forma visual y sencilla.",
     "enlaces": [
-      { "texto": "▶ ACCEDER UNIDAD 3", "url": "https://stevenjose.github.io/unidad-3-medi-pro/" }
+      {
+        "texto": "▶ ACCEDER UNIDAD 3",
+        "url": "https://stevenjose.github.io/unidad-3-medi-pro/"
+      }
     ]
   },
   {
@@ -37,7 +53,10 @@
     "colorVar": "var(--neon-yellow)",
     "descripcion": "Carpeta compartida en la nube para consultar, subir y descargar fichas, esquemas y materiales de clase.",
     "enlaces": [
-      { "texto": "📂 ABRIR CARPETA DRIVE", "url": "https://drive.google.com/drive/folders/1i1NMoN6iZmiviaS9UngoK6qGMkx2pgeY" }
+      {
+        "texto": "📂 ABRIR CARPETA DRIVE",
+        "url": "https://drive.google.com/drive/folders/1i1NMoN6iZmiviaS9UngoK6qGMkx2pgeY"
+      }
     ]
   }
 ]
