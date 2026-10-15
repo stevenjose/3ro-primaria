@@ -393,3 +393,42 @@ fetch("materias.json")
   .then((res) => res.json())
   .then((data) => renderMaterias(data))
   .catch(() => renderMaterias(fallbackMaterias));
+
+  // ==========================================
+// REGISTRO SERVICE WORKER Y BOTÓN INSTALAR PWA
+// ==========================================
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Previene que el navegador muestre su banner automático por defecto
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Muestra tu botón flotante personalizado estilo Splatoon
+    const installBtn = document.getElementById('install-btn');
+    if (installBtn) {
+        installBtn.style.display = 'flex';
+    }
+});
+
+function installPWA() {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    
+    deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+            console.log('El usuario aceptó instalar la PWA');
+        }
+        deferredPrompt = null;
+        document.getElementById('install-btn').style.display = 'none';
+    });
+}
+
+// Registrar el Service Worker en segundo plano
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(() => console.log('Service Worker registrado con éxito'))
+            .catch((err) => console.log('Error al registrar Service Worker:', err));
+    });
+}
