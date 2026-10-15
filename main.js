@@ -1,10 +1,9 @@
 // ==========================================
-// CONTROL DE VERSIÓN (v2.4 - Pluma de Tinta Continua)
+// CONTROL DE VERSIÓN (v2.5 - Google Calendar)
 // ==========================================
-const APP_VERSION = "2.4";
+const APP_VERSION = "2.5";
 
-document.getElementById("page-title").textContent =
-  `Splat-Portal 3º Primaria v${APP_VERSION}`;
+document.getElementById("page-title").textContent = `Splat-Portal 3º Primaria v${APP_VERSION}`;
 document.getElementById("version-badge-text").textContent = `v${APP_VERSION}`;
 document.getElementById("version-footer-text").textContent = APP_VERSION;
 
@@ -18,6 +17,14 @@ const fallbackExamenes = [
     titulo: "Unit 1: Animals & Grammar",
     color: "#00f5d4",
     estado: "proximo",
+  },
+  {
+    fecha: "21 OCT",
+    materia: "Matemáticas",
+    titulo: "Las Horas del Reloj",
+    color: "#eaff00",
+    estado: "proximo",
+    fechaCompleta: "20261021T090000Z/20261021T100000Z"
   },
   {
     fecha: "24 OCT",
@@ -58,7 +65,7 @@ const fallbackMaterias = [
     titulo: "Matemáticas",
     icono: "fa-solid fa-calculator",
     descripcion:
-      "Jueguecitos interactivos para practicar las tablas de multiplicar y aprender a restar llevando paso a paso.",
+      "Jueguecitos interactivos para practicar las tablas de multiplicar, aprender a restar llevando y leer el reloj analógico.",
     enlaces: [
       {
         texto: "▶ TABLAS MULTIPLICAR",
@@ -68,6 +75,10 @@ const fallbackMaterias = [
         texto: "✏️ RESTAS LLEVANDO",
         url: "https://stevenjose.github.io/restas-llevando/",
       },
+      {
+        texto: "⏰ EL RELOJ",
+        url: "https://stevenjose.github.io/reloj-analogico/",
+      }
     ],
   },
   {
@@ -214,13 +225,12 @@ function shootRandomInk(e) {
 // Chorro de gotas al arrastrar la pluma presionada
 function spawnInkTrail(x, y) {
   const now = Date.now();
-  if (now - lastSprayTime < 28) return; // Controla la cadencia del disparo de tinta
+  if (now - lastSprayTime < 28) return; 
   lastSprayTime = now;
 
   playBrushStreamSound();
   addInkProgress(0.4);
 
-  // Gota central + sub-gotitas alrededor para efecto de salpicadura real
   const dropsCount = 2;
   for (let i = 0; i < dropsCount; i++) {
     const drop = document.createElement("div");
@@ -230,7 +240,6 @@ function spawnInkTrail(x, y) {
     const offsetX = i === 0 ? 0 : (Math.random() - 0.5) * 38;
     const offsetY = i === 0 ? 0 : (Math.random() - 0.5) * 38;
 
-    // Alterna ligeramente el color en las salpicaduras secundarias
     const color =
       Math.random() > 0.25
         ? activeStreamColor
@@ -266,26 +275,19 @@ window.addEventListener("mouseup", () => {
 });
 
 // Eventos táctiles (Móvil / Tablet)
-window.addEventListener(
-  "touchstart",
-  (e) => {
+window.addEventListener("touchstart", (e) => {
     isPainting = true;
-    activeStreamColor =
-      splatPalette[Math.floor(Math.random() * splatPalette.length)];
+    activeStreamColor = splatPalette[Math.floor(Math.random() * splatPalette.length)];
     const touch = e.touches[0];
     if (touch) spawnInkTrail(touch.clientX, touch.clientY);
-  },
-  { passive: true },
+  }, { passive: true }
 );
 
-window.addEventListener(
-  "touchmove",
-  (e) => {
+window.addEventListener("touchmove", (e) => {
     if (!isPainting) return;
     const touch = e.touches[0];
     if (touch) spawnInkTrail(touch.clientX, touch.clientY);
-  },
-  { passive: true },
+  }, { passive: true }
 );
 
 window.addEventListener("touchend", () => {
@@ -304,9 +306,25 @@ function renderExamenes(examenes) {
       const esPasado = ex.estado === "pasado";
       const claseCard = esPasado ? "calendar-card pasado" : "calendar-card";
       const borderColor = esPasado ? "#64748b" : ex.color || "#00f5d4";
-      const badgeHTML = esPasado
-        ? '<span class="splat-badge badge-done">✓ COMBATE GANADO</span>'
-        : '<span class="splat-badge badge-next">⚡ PRÓXIMO COMBATE</span>';
+      
+      let badgeHTML = "";
+      if (esPasado) {
+        badgeHTML = '<span class="splat-badge badge-done">✓ COMBATE GANADO</span>';
+      } else {
+        const gcalLink = ex.fechaCompleta
+          ? `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ex.titulo)}&dates=${ex.fechaCompleta}&details=Examen+de+${encodeURIComponent(ex.materia)}`
+          : "#";
+
+        badgeHTML = `
+          <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+              <span class="splat-badge badge-next">⚡ PRÓXIMO COMBATE</span>
+              ${ex.fechaCompleta ? `
+              <a href="${gcalLink}" target="_blank" class="splat-badge" style="background:#fff; color:#000; text-decoration:none; display:inline-flex; align-items:center; gap:4px; border-color:#000;" onclick="event.stopPropagation()">
+                  <i class="fa-brands fa-google"></i> Guardar
+              </a>` : ""}
+          </div>
+        `;
+      }
 
       return `
             <div class="${claseCard}" style="border-left-color: ${borderColor}" onclick="shootRandomInk(event)">
@@ -316,7 +334,7 @@ function renderExamenes(examenes) {
                 <div class="cal-info">
                     <h4>${ex.titulo}</h4>
                     <p>Modo: <strong>${ex.materia}</strong></p>
-                    ${badgeHTML}
+                    <div style="margin-top: 6px;">${badgeHTML}</div>
                 </div>
             </div>
         `;
@@ -325,10 +343,10 @@ function renderExamenes(examenes) {
 }
 
 const subjectInkColors = {
-  english: "#00f5d4", // Turquesa Neón
-  maths: "#eaff00", // Amarillo Ácido Splatoon 3
-  medi: "#ff006e", // Magenta Tinta
-  drive: "#ff9e00", // Naranja Cefalópodo
+  english: "#00f5d4", 
+  maths: "#eaff00", 
+  medi: "#ff006e", 
+  drive: "#ff9e00", 
 };
 
 function renderMaterias(materias) {
@@ -339,7 +357,7 @@ function renderMaterias(materias) {
       const enlacesHTML = mat.enlaces
         .map(
           (link) => `
-            <a href="${link.url}" target="_blank" class="btn-splat" onclick="shootRandomInk(event)">
+            <a href="${link.url}" target="_blank" class="btn-splat" onclick="shootRandomInk(event); event.stopPropagation();">
                 ${link.texto}
             </a>
         `,

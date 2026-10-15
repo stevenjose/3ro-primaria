@@ -7,6 +7,14 @@
     "estado": "activo"
   },
   {
+    "fecha": "21 OCT",
+    "materia": "Matemáticas",
+    "titulo": "Las Horas del Reloj",
+    "color": "#eaff00",
+    "estado": "proximo",
+    "fechaCompleta": "20261021T090000Z/20261021T100000Z"
+  },
+  {
     "fecha": "02 Oct 2026",
     "materia": "Matemáticas",
     "titulo": "Control de la Tabla del 4",
