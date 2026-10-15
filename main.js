@@ -394,11 +394,8 @@ fetch("materias.json")
   .then((data) => renderMaterias(data))
   .catch(() => renderMaterias(fallbackMaterias));
 
-  // ==========================================
-// REGISTRO SERVICE WORKER Y BOTÓN INSTALAR PWA
-// ==========================================
-// ==========================================
-// CONTROL DE INSTALACIÓN PWA MEJORADO
+ // ==========================================
+// CONTROL DE INSTALACIÓN PWA Y SERVICE WORKER
 // ==========================================
 let deferredPrompt = null;
 
@@ -409,7 +406,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
 
 function installPWA() {
     if (deferredPrompt) {
-        // Si el navegador tiene listo el instalador nativo, lo lanzamos
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
             if (choiceResult.outcome === 'accepted') {
@@ -418,14 +414,12 @@ function installPWA() {
             deferredPrompt = null;
         });
     } else {
-        // Si ya está instalada o el navegador no lanza el prompt directo, 
-        // mostramos un aviso guía muy útil para familias
-        alert("💡 ¡Para instalar la app o crear un acceso directo:\n\n• En Móvil: Pulsa el menú (los 3 puntitos) de tu navegador y selecciona 'Añadir a la pantalla de inicio'.\n• En Ordenador: Haz clic en el icono de instalación 🖥️ en la barra de direcciones o en el menú de opciones del navegador.");
+        // Mensaje guía explicativo si se pulsa y el navegador ya la tiene o requiere menú manual
+        alert("💡 ¡Para instalar la app o crear un acceso directo:\n\n• En Móvil: Pulsa el menú (los 3 puntitos) de tu navegador y selecciona 'Añadir a la pantalla de inicio'.\n• En Ordenador: Haz clic en el icono de instalación 🖥️ en la barra de direcciones de Chrome o Edge.");
     }
 }
-  // ==========================================
-// REGISTRO SERVICE WORKER
-// ============================================
+
+// Registrar el Service Worker con ruta relativa
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')

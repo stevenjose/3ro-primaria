@@ -2,6 +2,7 @@
   "name": "Portal Educativo 3º Primaria",
   "short_name": "Portal 3º",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#12131a",
   "theme_color": "#12131a",
