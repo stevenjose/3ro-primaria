@@ -31,7 +31,8 @@ body {
     align-items: center;
     padding: 18px;
     overflow-x: hidden;
-    user-select: none; /* Evita que se seleccione el texto al arrastrar pintando */
+    user-select: none; 
+    touch-action: pan-y; /* Permite scroll vertical pero estabiliza el dibujo táctil */
 }
 
 /* Mantener el cursor de pluma incluso sobre botones y enlaces */
@@ -75,39 +76,39 @@ a, button, .ink-tank-box, .calendar-card, .splat-card {
     top: 40%; right: 8%;
 }
 
-/* Mancha grande al hacer un clic suelto */
-.click-splat {
-    position: fixed;
-    width: 72px;
-    height: 72px;
-    pointer-events: none;
-    z-index: 999;
-    border-radius: 45% 55% 65% 35% / 55% 45% 55% 45%;
-    transform: translate(-50%, -50%) scale(0);
-    animation: splatPop 1.2s ease-out forwards;
-}
-
-/* Gotas del chorro continuo al arrastrar la pluma */
+/* Efecto de chorro de la pistola / trazo de tinta */
 .trail-splat {
     position: fixed;
     pointer-events: none;
     z-index: 998;
-    border-radius: 52% 48% 60% 40% / 45% 55% 45% 55%;
+    /* Forma desordenada que varía constantemente */
+    border-radius: 42% 58% 35% 65% / 45% 55% 40% 60%;
     transform: translate(-50%, -50%) scale(0);
-    animation: trailFade 0.95s ease-out forwards;
+    animation: trailBlast 3s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
 }
 
-@keyframes splatPop {
-    0% { transform: translate(-50%, -50%) scale(0.2) rotate(0deg); opacity: 0.95; }
-    20% { transform: translate(-50%, -50%) scale(1.25) rotate(12deg); opacity: 0.95; }
-    80% { transform: translate(-50%, -50%) scale(1.1) rotate(12deg); opacity: 0.6; }
-    100% { transform: translate(-50%, -35%) scale(0.9) rotate(12deg); opacity: 0; }
+/* Animación del estallido central */
+@keyframes splatBlast {
+    0% { transform: scale(0.1) rotate(0deg); opacity: 1; }
+    5% { transform: scale(1) rotate(var(--rot, 0deg)); opacity: 1; }
+    85% { transform: scale(0.95) rotate(var(--rot, 0deg)); opacity: 1; }
+    100% { transform: scale(0.7) translateY(20px) rotate(var(--rot, 0deg)); opacity: 0; }
 }
 
-@keyframes trailFade {
-    0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0.95; }
-    25% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.9; }
-    100% { transform: translate(-50%, -25%) scale(0.75); opacity: 0; }
+/* Animación de las salpicaduras de impacto (satélites) */
+@keyframes satelliteBlast {
+    0% { transform: translate(0, 0) scale(0.2); opacity: 1; }
+    6% { transform: translate(var(--tx), var(--ty)) scale(var(--sz)); opacity: 1; }
+    85% { transform: translate(var(--tx), var(--ty)) scale(var(--sz)); opacity: 0.9; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0) translateY(30px); opacity: 0; }
+}
+
+/* Animación de los chorros del pincel/disparo continuo */
+@keyframes trailBlast {
+    0% { transform: translate(-50%, -50%) scale(0.2); opacity: 1; }
+    10% { transform: translate(-50%, -50%) scale(1.1) rotate(var(--rot, 0deg)); opacity: 1; }
+    85% { transform: translate(-50%, -50%) scale(0.95) rotate(var(--rot, 0deg)); opacity: 0.85; }
+    100% { transform: translate(-50%, -40%) scale(0.7) rotate(var(--rot, 0deg)); opacity: 0; }
 }
 
 .main-container {
@@ -530,4 +531,64 @@ a, button, .ink-tank-box, .calendar-card, .splat-card {
 @keyframes pulseInstall {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.04); }
+}
+
+
+
+/* --- IMPACTOS Y DISPAROS DE TINTA SPLATOON --- */
+.click-splat-wrapper {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999;
+    transform: translate(-50%, -50%);
+    width: 0; height: 0; /* Anclado exacto al centro del ratón */
+}
+
+/* Todas las piezas nacen desde el centro exacto */
+.click-splat, .splat-spike, .splat-satellite {
+    position: absolute;
+    top: 0; left: 0;
+}
+
+/* Cuerpo principal */
+.click-splat {
+    border-radius: 40% 60% 50% 50% / 50% 50% 60% 40%;
+    transform: scale(0) rotate(0deg);
+    animation: splatBlast 3.5s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
+}
+
+/* Los picos dentados de la mancha */
+.splat-spike {
+    transform-origin: 0% 50%; /* Crecen desde el centro hacia afuera */
+    border-radius: 50%;
+    transform: rotate(var(--rot)) scaleX(0);
+    animation: spikeBlast 3.5s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
+}
+
+/* Gotitas satélites separadas */
+.splat-satellite {
+    border-radius: 50%;
+    transform: scale(0);
+    animation: satelliteBlast 3.5s cubic-bezier(0.1, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes splatBlast {
+    0% { transform: scale(0.1) rotate(0deg); opacity: 1; }
+    5% { transform: scale(1) rotate(var(--rot, 0deg)); opacity: 1; }
+    85% { transform: scale(0.95) rotate(var(--rot, 0deg)); opacity: 1; }
+    100% { transform: scale(0.7) translateY(20px) rotate(var(--rot, 0deg)); opacity: 0; }
+}
+
+@keyframes spikeBlast {
+    0% { transform: rotate(var(--rot)) scaleX(0.1); opacity: 1; }
+    5% { transform: rotate(var(--rot)) scaleX(1); opacity: 1; }
+    85% { transform: rotate(var(--rot)) scaleX(0.9); opacity: 1; }
+    100% { transform: rotate(var(--rot)) scaleX(0) translateY(10px); opacity: 0; }
+}
+
+@keyframes satelliteBlast {
+    0% { transform: translate(0, 0) scale(0.2); opacity: 1; }
+    6% { transform: translate(var(--tx), var(--ty)) scale(var(--sz)); opacity: 1; }
+    85% { transform: translate(var(--tx), var(--ty)) scale(var(--sz)); opacity: 0.9; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0) translateY(30px); opacity: 0; }
 }

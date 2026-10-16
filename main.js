@@ -200,60 +200,127 @@ function addInkProgress(amount) {
   document.getElementById("ink-fill").style.width = `${inkLevel}%`;
 }
 
-// Mancha principal al hacer clic
+// Mancha principal al hacer clic (Ahora sí parece una salpicadura real)
 function shootRandomInk(e) {
   playSplatSound();
   addInkProgress(3);
 
+  let x = window.innerWidth / 2;
+  let y = 120;
+  if (e) {
+      if (e.touches && e.touches.length > 0) {
+          x = e.touches[0].clientX;
+          y = e.touches[0].clientY;
+      } else {
+          x = e.clientX;
+          y = e.clientY;
+      }
+  }
+
+  const randomColor = splatPalette[Math.floor(Math.random() * splatPalette.length)];
+  activeStreamColor = randomColor;
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "click-splat-wrapper";
+  wrapper.style.left = `${x}px`;
+  wrapper.style.top = `${y}px`;
+
+  // 1. Mancha central
   const splat = document.createElement("div");
   splat.className = "click-splat";
-  const randomColor =
-    splatPalette[Math.floor(Math.random() * splatPalette.length)];
-  activeStreamColor = randomColor;
+  const centralSize = 35 + Math.random() * 20; 
+  splat.style.width = `${centralSize}px`;
+  splat.style.height = `${centralSize}px`;
   splat.style.background = randomColor;
-  splat.style.boxShadow = `0 0 12px ${randomColor}`;
+  splat.style.marginLeft = `-${centralSize / 2}px`;
+  splat.style.marginTop = `-${centralSize / 2}px`;
+  splat.style.setProperty('--rot', `${Math.random() * 360}deg`);
+  wrapper.appendChild(splat);
 
-  const x = e ? e.clientX : window.innerWidth / 2;
-  const y = e ? e.clientY : 120;
-  splat.style.left = `${x}px`;
-  splat.style.top = `${y}px`;
+  // 2. PICOS (Tentáculos de pintura que forman la estrella de la mancha)
+  const spikeCount = 5 + Math.floor(Math.random() * 4); // 5 a 8 picos
+  for (let i = 0; i < spikeCount; i++) {
+      const spike = document.createElement("div");
+      spike.className = "splat-spike";
+      const length = 25 + Math.random() * 40; // Qué tan lejos llega la mancha
+      const thickness = 5 + Math.random() * 8; // Grosor de las puntas
+      spike.style.width = `${length}px`;
+      spike.style.height = `${thickness}px`;
+      spike.style.background = randomColor;
+      spike.style.marginTop = `-${thickness / 2}px`;
+      spike.style.setProperty('--rot', `${Math.random() * 360}deg`);
+      wrapper.appendChild(spike);
+  }
 
-  document.body.appendChild(splat);
-  setTimeout(() => splat.remove(), 1200);
+  // 3. Gotas satélites volando alrededor
+  const satelliteCount = 6 + Math.floor(Math.random() * 6);
+  for (let i = 0; i < satelliteCount; i++) {
+      const satellite = document.createElement("div");
+      satellite.className = "splat-satellite";
+      const satSize = 5 + Math.random() * 10;
+      satellite.style.width = `${satSize}px`;
+      satellite.style.height = `${satSize}px`;
+      satellite.style.background = randomColor;
+      satellite.style.marginLeft = `-${satSize / 2}px`;
+      satellite.style.marginTop = `-${satSize / 2}px`;
+
+      const angle = Math.random() * 2 * Math.PI;
+      const distance = 30 + Math.random() * 50;
+      satellite.style.setProperty('--tx', `${Math.cos(angle) * distance}px`);
+      satellite.style.setProperty('--ty', `${Math.sin(angle) * distance}px`);
+      satellite.style.setProperty('--sz', `${0.5 + Math.random() * 0.8}`);
+      wrapper.appendChild(satellite);
+  }
+
+  document.getElementById('ink-canvas').appendChild(wrapper);
+  setTimeout(() => wrapper.remove(), 4000); 
 }
 
-// Chorro de gotas al arrastrar la pluma presionada
+// Chorro de gotas al arrastrar / pintar continuo (Optimizado y asimétrico)
 function spawnInkTrail(x, y) {
   const now = Date.now();
   if (now - lastSprayTime < 28) return; 
   lastSprayTime = now;
 
   playBrushStreamSound();
-  addInkProgress(0.4);
+  addInkProgress(0.3);
 
-  const dropsCount = 2;
+  const isMobile = window.innerWidth <= 768;
+  const dropsCount = isMobile ? 3 : 2; 
+
   for (let i = 0; i < dropsCount; i++) {
     const drop = document.createElement("div");
     drop.className = "trail-splat";
 
-    const size = i === 0 ? 22 + Math.random() * 20 : 8 + Math.random() * 12;
-    const offsetX = i === 0 ? 0 : (Math.random() - 0.5) * 38;
-    const offsetY = i === 0 ? 0 : (Math.random() - 0.5) * 38;
+    const baseSize = isMobile ? 36 : 24;
+    const size = i === 0 ? baseSize + Math.random() * 22 : (baseSize/2) + Math.random() * 14;
+    
+    // Desplazamientos asimétricos desordenados
+    const offsetX = i === 0 ? 0 : (Math.random() - 0.5) * (isMobile ? 54 : 40);
+    const offsetY = i === 0 ? 0 : (Math.random() - 0.5) * (isMobile ? 54 : 40);
 
-    const color =
-      Math.random() > 0.25
-        ? activeStreamColor
+    const color = Math.random() > 0.25 
+        ? activeStreamColor 
         : splatPalette[Math.floor(Math.random() * splatPalette.length)];
 
     drop.style.width = `${size}px`;
     drop.style.height = `${size}px`;
     drop.style.background = color;
-    drop.style.boxShadow = `0 0 8px ${color}`;
+    drop.style.boxShadow = `0 0 6px ${color}`;
+    
+    // Creación de forma líquida e irregular única
+    const r1 = 25 + Math.random() * 50;
+    const r2 = 25 + Math.random() * 50;
+    const r3 = 25 + Math.random() * 50;
+    drop.style.borderRadius = `${r1}% ${100-r1}% ${r2}% ${100-r2}% / ${r3}% ${100-r3}% ${100-r2}% ${100-r1}%`;
+    drop.style.setProperty('--rot', `${Math.random() * 360}deg`);
+
     drop.style.left = `${x + offsetX}px`;
     drop.style.top = `${y + offsetY}px`;
 
-    document.body.appendChild(drop);
-    setTimeout(() => drop.remove(), 950);
+    // ENVIAR AL LIENZO GLOBAL DE FUSIÓN (#ink-canvas)
+    document.getElementById('ink-canvas').appendChild(drop);
+    setTimeout(() => drop.remove(), 3500); 
   }
 }
 
