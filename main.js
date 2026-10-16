@@ -3,7 +3,8 @@
 // ==========================================
 const APP_VERSION = "2.5";
 
-document.getElementById("page-title").textContent = `Splat-Portal 3º Primaria v${APP_VERSION}`;
+document.getElementById("page-title").textContent =
+  `Splat-Portal 3º Primaria v${APP_VERSION}`;
 document.getElementById("version-badge-text").textContent = `v${APP_VERSION}`;
 document.getElementById("version-footer-text").textContent = APP_VERSION;
 
@@ -24,7 +25,7 @@ const fallbackExamenes = [
     titulo: "Las Horas del Reloj",
     color: "#eaff00",
     estado: "proximo",
-    fechaCompleta: "20261021T090000Z/20261021T100000Z"
+    fechaCompleta: "20261021T090000Z/20261021T100000Z",
   },
   {
     fecha: "24 OCT",
@@ -78,7 +79,7 @@ const fallbackMaterias = [
       {
         texto: "⏰ EL RELOJ",
         url: "https://stevenjose.github.io/reloj-analogico/",
-      }
+      },
     ],
   },
   {
@@ -208,16 +209,17 @@ function shootRandomInk(e) {
   let x = window.innerWidth / 2;
   let y = 120;
   if (e) {
-      if (e.touches && e.touches.length > 0) {
-          x = e.touches[0].clientX;
-          y = e.touches[0].clientY;
-      } else {
-          x = e.clientX;
-          y = e.clientY;
-      }
+    if (e.touches && e.touches.length > 0) {
+      x = e.touches[0].clientX;
+      y = e.touches[0].clientY;
+    } else {
+      x = e.clientX;
+      y = e.clientY;
+    }
   }
 
-  const randomColor = splatPalette[Math.floor(Math.random() * splatPalette.length)];
+  const randomColor =
+    splatPalette[Math.floor(Math.random() * splatPalette.length)];
   activeStreamColor = randomColor;
 
   const wrapper = document.createElement("div");
@@ -228,99 +230,103 @@ function shootRandomInk(e) {
   // 1. Mancha central
   const splat = document.createElement("div");
   splat.className = "click-splat";
-  const centralSize = 35 + Math.random() * 20; 
+  const centralSize = 35 + Math.random() * 20;
   splat.style.width = `${centralSize}px`;
   splat.style.height = `${centralSize}px`;
   splat.style.background = randomColor;
   splat.style.marginLeft = `-${centralSize / 2}px`;
   splat.style.marginTop = `-${centralSize / 2}px`;
-  splat.style.setProperty('--rot', `${Math.random() * 360}deg`);
+  splat.style.setProperty("--rot", `${Math.random() * 360}deg`);
   wrapper.appendChild(splat);
 
   // 2. PICOS (Tentáculos de pintura que forman la estrella de la mancha)
   const spikeCount = 5 + Math.floor(Math.random() * 4); // 5 a 8 picos
   for (let i = 0; i < spikeCount; i++) {
-      const spike = document.createElement("div");
-      spike.className = "splat-spike";
-      const length = 25 + Math.random() * 40; // Qué tan lejos llega la mancha
-      const thickness = 5 + Math.random() * 8; // Grosor de las puntas
-      spike.style.width = `${length}px`;
-      spike.style.height = `${thickness}px`;
-      spike.style.background = randomColor;
-      spike.style.marginTop = `-${thickness / 2}px`;
-      spike.style.setProperty('--rot', `${Math.random() * 360}deg`);
-      wrapper.appendChild(spike);
+    const spike = document.createElement("div");
+    spike.className = "splat-spike";
+    const length = 25 + Math.random() * 40; // Qué tan lejos llega la mancha
+    const thickness = 5 + Math.random() * 8; // Grosor de las puntas
+    spike.style.width = `${length}px`;
+    spike.style.height = `${thickness}px`;
+    spike.style.background = randomColor;
+    spike.style.marginTop = `-${thickness / 2}px`;
+    spike.style.setProperty("--rot", `${Math.random() * 360}deg`);
+    wrapper.appendChild(spike);
   }
 
   // 3. Gotas satélites volando alrededor
   const satelliteCount = 6 + Math.floor(Math.random() * 6);
   for (let i = 0; i < satelliteCount; i++) {
-      const satellite = document.createElement("div");
-      satellite.className = "splat-satellite";
-      const satSize = 5 + Math.random() * 10;
-      satellite.style.width = `${satSize}px`;
-      satellite.style.height = `${satSize}px`;
-      satellite.style.background = randomColor;
-      satellite.style.marginLeft = `-${satSize / 2}px`;
-      satellite.style.marginTop = `-${satSize / 2}px`;
+    const satellite = document.createElement("div");
+    satellite.className = "splat-satellite";
+    const satSize = 5 + Math.random() * 10;
+    satellite.style.width = `${satSize}px`;
+    satellite.style.height = `${satSize}px`;
+    satellite.style.background = randomColor;
+    satellite.style.marginLeft = `-${satSize / 2}px`;
+    satellite.style.marginTop = `-${satSize / 2}px`;
 
-      const angle = Math.random() * 2 * Math.PI;
-      const distance = 30 + Math.random() * 50;
-      satellite.style.setProperty('--tx', `${Math.cos(angle) * distance}px`);
-      satellite.style.setProperty('--ty', `${Math.sin(angle) * distance}px`);
-      satellite.style.setProperty('--sz', `${0.5 + Math.random() * 0.8}`);
-      wrapper.appendChild(satellite);
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = 30 + Math.random() * 50;
+    satellite.style.setProperty("--tx", `${Math.cos(angle) * distance}px`);
+    satellite.style.setProperty("--ty", `${Math.sin(angle) * distance}px`);
+    satellite.style.setProperty("--sz", `${0.5 + Math.random() * 0.8}`);
+    wrapper.appendChild(satellite);
   }
 
-  document.getElementById('ink-canvas').appendChild(wrapper);
-  setTimeout(() => wrapper.remove(), 4000); 
+  document.getElementById("ink-canvas").appendChild(wrapper);
+  setTimeout(() => wrapper.remove(), 4000);
 }
 
 // Chorro de gotas al arrastrar / pintar continuo (Optimizado y asimétrico)
 function spawnInkTrail(x, y) {
   const now = Date.now();
-  if (now - lastSprayTime < 28) return; 
+  if (now - lastSprayTime < 28) return;
   lastSprayTime = now;
 
   playBrushStreamSound();
   addInkProgress(0.3);
 
   const isMobile = window.innerWidth <= 768;
-  const dropsCount = isMobile ? 3 : 2; 
+  const dropsCount = isMobile ? 3 : 2;
 
   for (let i = 0; i < dropsCount; i++) {
     const drop = document.createElement("div");
     drop.className = "trail-splat";
 
     const baseSize = isMobile ? 36 : 24;
-    const size = i === 0 ? baseSize + Math.random() * 22 : (baseSize/2) + Math.random() * 14;
-    
+    const size =
+      i === 0
+        ? baseSize + Math.random() * 22
+        : baseSize / 2 + Math.random() * 14;
+
     // Desplazamientos asimétricos desordenados
     const offsetX = i === 0 ? 0 : (Math.random() - 0.5) * (isMobile ? 54 : 40);
     const offsetY = i === 0 ? 0 : (Math.random() - 0.5) * (isMobile ? 54 : 40);
 
-    const color = Math.random() > 0.25 
-        ? activeStreamColor 
+    const color =
+      Math.random() > 0.25
+        ? activeStreamColor
         : splatPalette[Math.floor(Math.random() * splatPalette.length)];
 
     drop.style.width = `${size}px`;
     drop.style.height = `${size}px`;
     drop.style.background = color;
     drop.style.boxShadow = `0 0 6px ${color}`;
-    
+
     // Creación de forma líquida e irregular única
     const r1 = 25 + Math.random() * 50;
     const r2 = 25 + Math.random() * 50;
     const r3 = 25 + Math.random() * 50;
-    drop.style.borderRadius = `${r1}% ${100-r1}% ${r2}% ${100-r2}% / ${r3}% ${100-r3}% ${100-r2}% ${100-r1}%`;
-    drop.style.setProperty('--rot', `${Math.random() * 360}deg`);
+    drop.style.borderRadius = `${r1}% ${100 - r1}% ${r2}% ${100 - r2}% / ${r3}% ${100 - r3}% ${100 - r2}% ${100 - r1}%`;
+    drop.style.setProperty("--rot", `${Math.random() * 360}deg`);
 
     drop.style.left = `${x + offsetX}px`;
     drop.style.top = `${y + offsetY}px`;
 
     // ENVIAR AL LIENZO GLOBAL DE FUSIÓN (#ink-canvas)
-    document.getElementById('ink-canvas').appendChild(drop);
-    setTimeout(() => drop.remove(), 3500); 
+    document.getElementById("ink-canvas").appendChild(drop);
+    setTimeout(() => drop.remove(), 3500);
   }
 }
 
@@ -342,19 +348,26 @@ window.addEventListener("mouseup", () => {
 });
 
 // Eventos táctiles (Móvil / Tablet)
-window.addEventListener("touchstart", (e) => {
+window.addEventListener(
+  "touchstart",
+  (e) => {
     isPainting = true;
-    activeStreamColor = splatPalette[Math.floor(Math.random() * splatPalette.length)];
+    activeStreamColor =
+      splatPalette[Math.floor(Math.random() * splatPalette.length)];
     const touch = e.touches[0];
     if (touch) spawnInkTrail(touch.clientX, touch.clientY);
-  }, { passive: true }
+  },
+  { passive: true },
 );
 
-window.addEventListener("touchmove", (e) => {
+window.addEventListener(
+  "touchmove",
+  (e) => {
     if (!isPainting) return;
     const touch = e.touches[0];
     if (touch) spawnInkTrail(touch.clientX, touch.clientY);
-  }, { passive: true }
+  },
+  { passive: true },
 );
 
 window.addEventListener("touchend", () => {
@@ -373,10 +386,11 @@ function renderExamenes(examenes) {
       const esPasado = ex.estado === "pasado";
       const claseCard = esPasado ? "calendar-card pasado" : "calendar-card";
       const borderColor = esPasado ? "#64748b" : ex.color || "#00f5d4";
-      
+
       let badgeHTML = "";
       if (esPasado) {
-        badgeHTML = '<span class="splat-badge badge-done">✓ COMBATE GANADO</span>';
+        badgeHTML =
+          '<span class="splat-badge badge-done">✓ COMBATE GANADO</span>';
       } else {
         const gcalLink = ex.fechaCompleta
           ? `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ex.titulo)}&dates=${ex.fechaCompleta}&details=Examen+de+${encodeURIComponent(ex.materia)}`
@@ -385,10 +399,14 @@ function renderExamenes(examenes) {
         badgeHTML = `
           <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
               <span class="splat-badge badge-next">⚡ PRÓXIMO COMBATE</span>
-              ${ex.fechaCompleta ? `
+              ${
+                ex.fechaCompleta
+                  ? `
               <a href="${gcalLink}" target="_blank" class="splat-badge" style="background:#fff; color:#000; text-decoration:none; display:inline-flex; align-items:center; gap:4px; border-color:#000;" onclick="event.stopPropagation()">
                   <i class="fa-brands fa-google"></i> Guardar
-              </a>` : ""}
+              </a>`
+                  : ""
+              }
           </div>
         `;
       }
@@ -410,10 +428,10 @@ function renderExamenes(examenes) {
 }
 
 const subjectInkColors = {
-  english: "#00f5d4", 
-  maths: "#eaff00", 
-  medi: "#ff006e", 
-  drive: "#ff9e00", 
+  english: "#00f5d4",
+  maths: "#eaff00",
+  medi: "#ff006e",
+  drive: "#ff9e00",
 };
 
 function renderMaterias(materias) {
@@ -461,36 +479,87 @@ fetch("materias.json")
   .then((data) => renderMaterias(data))
   .catch(() => renderMaterias(fallbackMaterias));
 
- // ==========================================
+// ==========================================
 // CONTROL DE INSTALACIÓN PWA Y SERVICE WORKER
 // ==========================================
 let deferredPrompt = null;
 
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
 });
 
 function installPWA() {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-                console.log('El usuario aceptó instalar la PWA');
-            }
-            deferredPrompt = null;
-        });
-    } else {
-        // Mensaje guía explicativo si se pulsa y el navegador ya la tiene o requiere menú manual
-        alert("💡 ¡Para instalar la app o crear un acceso directo:\n\n• En Móvil: Pulsa el menú (los 3 puntitos) de tu navegador y selecciona 'Añadir a la pantalla de inicio'.\n• En Ordenador: Haz clic en el icono de instalación 🖥️ en la barra de direcciones de Chrome o Edge.");
-    }
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === "accepted") {
+        console.log("El usuario aceptó instalar la PWA");
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    // Mensaje guía explicativo si se pulsa y el navegador ya la tiene o requiere menú manual
+    alert(
+      "💡 ¡Para instalar la app o crear un acceso directo:\n\n• En Móvil: Pulsa el menú (los 3 puntitos) de tu navegador y selecciona 'Añadir a la pantalla de inicio'.\n• En Ordenador: Haz clic en el icono de instalación 🖥️ en la barra de direcciones de Chrome o Edge.",
+    );
+  }
 }
 
 // Registrar el Service Worker con ruta relativa
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-            .then(() => console.log('Service Worker registrado con éxito'))
-            .catch((err) => console.log('Error al registrar Service Worker:', err));
-    });
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("./sw.js")
+      .then(() => console.log("Service Worker registrado con éxito"))
+      .catch((err) => console.log("Error al registrar Service Worker:", err));
+  });
 }
+
+// ==========================================
+// SISTEMA MULTIJUGADOR: INKLINGS EN LÍNEA
+// ==========================================
+// REEMPLAZA ESTO CON TUS DATOS DE FIREBASE
+const firebaseConfig = {
+  apiKey: "AIzaSyDPx-QCtj_Oc0nKlV4q8TIu4JT0hAPqv5Q",
+  authDomain: "splat-portal.firebaseapp.com",
+  databaseURL:
+    "https://splat-portal-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "splat-portal",
+  storageBucket: "splat-portal.firebasestorage.app",
+  messagingSenderId: "133083337961",
+  appId: "1:133083337961:web:b2cd425ec950375fe90c78",
+  measurementId: "G-DZRYS1Y8N2",
+};
+
+// Inicializamos Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+// Referencias a la base de datos
+const connectedRef = database.ref(".info/connected");
+const onlineUsersRef = database.ref("online_users");
+
+// Escuchar nuestra propia conexión
+connectedRef.on("value", (snap) => {
+  if (snap.val() === true) {
+    // Generamos un "ID de jugador" temporal en la base de datos
+    const userRef = onlineUsersRef.push();
+
+    // MAGIA: Cuando cerramos la pestaña, Firebase elimina automáticamente nuestro ID
+    userRef.onDisconnect().remove();
+
+    // Anunciamos que estamos en línea
+    userRef.set(true);
+  }
+});
+
+// Escuchar cuántos usuarios totales hay en línea
+onlineUsersRef.on("value", (snap) => {
+  // Contamos cuántos nodos hay en 'online_users'
+  const currentOnline = snap.numChildren();
+  const counterElement = document.getElementById("online-count");
+  if (counterElement) {
+    counterElement.textContent = currentOnline;
+  }
+});

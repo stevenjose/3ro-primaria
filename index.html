@@ -14,24 +14,92 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/controller.png">
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#12131a">
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://img.icons8.com/color/48/controller.png"
+    />
+    <link rel="manifest" href="./manifest.json" />
+    <meta name="theme-color" content="#12131a" />
   </head>
   <body>
+    <!-- BARRA SUPERIOR: TANQUE DE TINTA (TURF METER) -->
+    <div class="splat-hud">
+      <div
+        class="ink-tank-box"
+        onclick="shootRandomInk(event)"
+        title="¡Haz clic para disparar tinta!"
+      >
+        <!-- ... tu código del tanque ... -->
+      </div>
+
+      <!-- NUEVO: INDICADOR DE INKLINGS EN LÍNEA -->
+      <div
+        class="online-counter"
+        style="
+          background: var(--splat-purple);
+          padding: 8px 14px;
+          border-radius: 12px;
+          border: 3px solid #fff;
+          font-family: &quot;Press Start 2P&quot;, monospace;
+          font-size: 0.65rem;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          box-shadow: 0 4px 0 var(--ink-black);
+          transform: rotate(-1deg);
+        "
+      >
+        <div
+          style="
+            width: 10px;
+            height: 10px;
+            background: #00f5d4;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00f5d4;
+            animation: pulse 1.5s infinite;
+          "
+        ></div>
+        <span id="online-count">1</span> CONECTADOS
+      </div>
+
+      <div class="hud-right">
+        <!-- ... tu código del botón de sonido ... -->
+      </div>
+    </div>
     <!-- Filtro de fusión líquida MÁS AFILADO -->
-    <svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 0; height: 0; pointer-events: none;">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      style="position: absolute; width: 0; height: 0; pointer-events: none"
+    >
       <defs>
         <filter id="splatoon-fusion">
           <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur" />
-          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+          <feColorMatrix
+            in="blur"
+            mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+            result="goo"
+          />
           <feComposite in="SourceGraphic" in2="goo" operator="atop" />
         </filter>
       </defs>
     </svg>
 
     <!-- LIENZO INVISIBLE DONDE SE FUSIONARÁ TODA LA TINTA -->
-    <div id="ink-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 998; filter: url('#splatoon-fusion');"></div>
+    <div
+      id="ink-canvas"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 998;
+        filter: url(&quot;#splatoon-fusion&quot;);
+      "
+    ></div>
     <!-- Manchas de tinta decorativas en el fondo -->
     <div class="ink-bg-layer" id="ink-bg-layer">
       <div class="static-splat splat-yellow"></div>
@@ -77,9 +145,9 @@
         <div class="graffiti-tag">⚡ TURF WAR: CURSO 3º PRIMARIA ⚡</div>
         <h1 class="splat-title">PORTAL 3º</h1>
         <p class="splat-subtitle">
-          ¡Bienvenidos familias! 🐙 Pinta la pantalla haciendo
-          clic, revisa las <strong>fechas de combate (exámenes)</strong> y entra
-          a las misiones de cada asignatura.
+          ¡Bienvenidos familias! 🐙 Pinta la pantalla haciendo clic, revisa las
+          <strong>fechas de combate (exámenes)</strong> y entra a las misiones
+          de cada asignatura.
         </p>
       </header>
 
@@ -119,9 +187,11 @@
     </div>
     <!-- BOTÓN FLOTANTE DE INSTALAR APP -->
     <button id="install-btn" class="install-pwa-btn" onclick="installPWA()">
-        📱 <span id="install-text">¡Instalar App!</span>
+      📱 <span id="install-text">¡Instalar App!</span>
     </button>
+    <!-- SCRIPTS DE FIREBASE (Añadir justo antes de main.js) -->
+    <script src="[https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js](https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js)"></script>
+    <script src="[https://www.gstatic.com/firebasejs/10.4.0/firebase-database-compat.js](https://www.gstatic.com/firebasejs/10.4.0/firebase-database-compat.js)"></script>
     <script src="main.js"></script>
-  
   </body>
 </html>
