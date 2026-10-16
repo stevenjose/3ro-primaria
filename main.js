@@ -628,36 +628,6 @@ function sendChatMessage(e) {
   playSplatSound();
 }
 
-// Escuchar mensajes en tiempo real (limitado a los últimos 35)
-chatMessagesRef.limitToLast(35).on("child_added", (snapshot) => {
-  const data = snapshot.val();
-  const container = document.getElementById("chat-messages-container");
-  if (!container) return;
-
-  const msgDiv = document.createElement("div");
-  msgDiv.className = "chat-msg";
-  msgDiv.style.background = data.color || "#00f5d4";
-  msgDiv.style.color = "#07070a";
-
-  const userSpan = document.createElement("span");
-  userSpan.className = "chat-msg-user";
-  userSpan.textContent = data.user || "Inkling";
-
-  const textNode = document.createTextNode(data.text || "");
-
-  msgDiv.appendChild(userSpan);
-  msgDiv.appendChild(textNode);
-  container.appendChild(msgDiv);
-
-  scrollChatToBottom();
-
-  // Si el chat está cerrado y entra un mensaje nuevo, avisar con el badge
-  if (!chatOpen) {
-    const badge = document.getElementById("chat-unread-badge");
-    if (badge) badge.style.display = "inline-block";
-  }
-});
-
 // ==========================================
 // SISTEMA DE CHAT EN TIEMPO REAL (FIREBASE - TTL 2 HORAS)
 // ==========================================
