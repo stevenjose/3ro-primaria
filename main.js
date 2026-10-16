@@ -661,13 +661,7 @@ chatMessagesRef.limitToLast(35).on("child_added", (snapshot) => {
 // ==========================================
 // SISTEMA DE CHAT EN TIEMPO REAL (FIREBASE - TTL 2 HORAS)
 // ==========================================
-const chatMessagesRef = database.ref("chat_messages");
 const TWO_HOURS_MS = 2 * 60 * 60 * 1000; // 2 horas en milisegundos
-
-let chatOpen = false;
-let userNick = localStorage.getItem("splat_nick") || `Inkling_${Math.floor(100 + Math.random() * 900)}`;
-
-const nickInput = document.getElementById("chat-nick-input");
 if (nickInput) {
   nickInput.value = userNick;
 }
