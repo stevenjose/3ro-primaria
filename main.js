@@ -657,3 +657,132 @@ chatMessagesRef.limitToLast(35).on("child_added", (snapshot) => {
     if (badge) badge.style.display = "inline-block";
   }
 });
+
+// ==========================================
+// SISTEMA DE CHAT EN TIEMPO REAL (FIREBASE - TTL 2 HORAS)
+// ==========================================
+const chatMessagesRef = database.ref("chat_messages");
+const TWO_HOURS_MS = 2 * 60 * 60 * 1000; // 2 horas en milisegundos
+
+let chatOpen = false;
+let userNick = localStorage.getItem("splat_nick") || `Inkling_${Math.floor(100 + Math.random() * 900)}`;
+
+const nickInput = document.getElementById("chat-nick-input");
+if (nickInput) {
+  nickInput.value = userNick;
+}
+
+function saveNickname() {
+  const val = document.getElementById("chat-nick-input").value.trim();
+  if (val) {
+    userNick = val;
+    localStorage.setItem("splat_nick", userNick);
+  }
+}
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  const chatWindow = document.getElementById("splat-chat-window");
+  const badge = document.getElementById("chat-unread-badge");
+
+  if (chatOpen) {
+    chatWindow.classList.remove("chat-hidden");
+    if (badge) badge.style.display = "none";
+    scrollChatToBottom();
+  } else {
+    chatWindow.classList.add("chat-hidden");
+  }
+}
+
+function scrollChatToBottom() {
+  const container = document.getElementById("chat-messages-container");
+  if (container) {
+    container.scrollTop = container.scrollHeight;
+  }
+}
+
+// Función para purgar mensajes con más de 2 horas en Firebase
+function cleanOldMessages() {
+  const cutoffTime = Date.now() - TWO_HOURS_MS;
+  chatMessagesRef
+    .orderByChild("timestamp")
+    .endAt(cutoffTime)
+    .once("value", (snapshot) => {
+      snapshot.forEach((child) => {
+        child.ref.remove();
+      });
+    });
+}
+
+// Ejecutar limpieza al iniciar y luego cada 5 minutos
+cleanOldMessages();
+setInterval(cleanOldMessages, 5 * 60 * 1000);
+
+// Enviar mensaje
+function sendChatMessage(e) {
+  e.preventDefault();
+  const input = document.getElementById("chat-text-input");
+  const text = input.value.trim();
+  if (!text) return;
+
+  saveNickname();
+
+  const color = splatPalette[Math.floor(Math.random() * splatPalette.length)];
+
+  chatMessagesRef.push({
+    user: userNick,
+    text: text,
+    color: color,
+    timestamp: firebase.database.ServerValue.TIMESTAMP
+  });
+
+  input.value = "";
+  playSplatSound();
+
+  // Limpiar mensajes expirados en cada envío
+  cleanOldMessages();
+}
+
+// Escuchar mensajes nuevos en tiempo real
+chatMessagesRef.limitToLast(40).on("child_added", (snapshot) => {
+  const data = snapshot.val();
+  const container = document.getElementById("chat-messages-container");
+  if (!container || !data) return;
+
+  // Si el mensaje en base de datos ya tiene más de 2 horas, no renderizarlo
+  if (data.timestamp && Date.now() - data.timestamp > TWO_HOURS_MS) {
+    snapshot.ref.remove();
+    return;
+  }
+
+  const msgDiv = document.createElement("div");
+  msgDiv.className = "chat-msg";
+  msgDiv.id = `msg-${snapshot.key}`; // Identificador para poder borrarlo del DOM
+  msgDiv.style.background = data.color || "#00f5d4";
+  msgDiv.style.color = "#07070a";
+
+  const userSpan = document.createElement("span");
+  userSpan.className = "chat-msg-user";
+  userSpan.textContent = data.user || "Inkling";
+
+  const textNode = document.createTextNode(data.text || "");
+
+  msgDiv.appendChild(userSpan);
+  msgDiv.appendChild(textNode);
+  container.appendChild(msgDiv);
+
+  scrollChatToBottom();
+
+  if (!chatOpen) {
+    const badge = document.getElementById("chat-unread-badge");
+    if (badge) badge.style.display = "inline-block";
+  }
+});
+
+// Eliminar mensaje visualmente si expira o es borrado de Firebase
+chatMessagesRef.on("child_removed", (snapshot) => {
+  const el = document.getElementById(`msg-${snapshot.key}`);
+  if (el) {
+    el.remove();
+  }
+});
