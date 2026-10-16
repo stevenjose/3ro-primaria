@@ -189,10 +189,41 @@
     <button id="install-btn" class="install-pwa-btn" onclick="installPWA()">
       📱 <span id="install-text">¡Instalar App!</span>
     </button>
+    <!-- BOTÓN TOGGLE CHAT TINTELIA -->
+    <button id="chat-toggle-btn" class="chat-toggle-btn" onclick="toggleChat()" title="Abrir Chat de Escuadrón">
+      💬 <span class="chat-badge" id="chat-unread-badge" style="display: none;">!</span>
+    </button>
+
+    <!-- VENTANA DE CHAT SPLATOON -->
+    <div id="splat-chat-window" class="splat-chat-window chat-hidden">
+      <div class="chat-header">
+        <div class="chat-header-title">
+          <span>🦑 CHAT ESCUADRÓN</span>
+        </div>
+        <button class="chat-close-btn" onclick="toggleChat()">✖</button>
+      </div>
+
+      <!-- Configurar apodo -->
+      <div class="chat-nick-bar">
+        <span>Inkling:</span>
+        <input type="text" id="chat-nick-input" placeholder="Tu nombre..." maxlength="12" onchange="saveNickname()" />
+      </div>
+
+      <!-- Lista de mensajes -->
+      <div class="chat-messages" id="chat-messages-container">
+        <!-- Los mensajes se cargarán en tiempo real -->
+      </div>
+
+      <!-- Formulario de envío -->
+      <form class="chat-input-area" onsubmit="sendChatMessage(event)">
+        <input type="text" id="chat-text-input" placeholder="Escribe un mensaje..." maxlength="80" autocomplete="off" />
+        <button type="submit" class="chat-send-btn">💥</button>
+      </form>
+    </div>
     <!-- 1. Enlaces limpios de Firebase -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.4.0/firebase-app-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.4.0/firebase-database-compat.min.js"></script>
-    
+
     <script src="main.js"></script>
   </body>
 </html>

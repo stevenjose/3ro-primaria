@@ -562,3 +562,98 @@ onlineUsersRef.on("value", (snap) => {
     counterElement.textContent = currentOnline;
   }
 });
+
+// ==========================================
+// SISTEMA DE CHAT EN TIEMPO REAL (FIREBASE)
+// ==========================================
+const chatMessagesRef = database.ref("chat_messages");
+let chatOpen = false;
+let userNick = localStorage.getItem("splat_nick") || `Inkling_${Math.floor(100 + Math.random() * 900)}`;
+
+// Poner nick inicial en el input
+const nickInput = document.getElementById("chat-nick-input");
+if (nickInput) {
+  nickInput.value = userNick;
+}
+
+function saveNickname() {
+  const val = document.getElementById("chat-nick-input").value.trim();
+  if (val) {
+    userNick = val;
+    localStorage.setItem("splat_nick", userNick);
+  }
+}
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  const chatWindow = document.getElementById("splat-chat-window");
+  const badge = document.getElementById("chat-unread-badge");
+  
+  if (chatOpen) {
+    chatWindow.classList.remove("chat-hidden");
+    badge.style.display = "none";
+    scrollChatToBottom();
+  } else {
+    chatWindow.classList.add("chat-hidden");
+  }
+}
+
+function scrollChatToBottom() {
+  const container = document.getElementById("chat-messages-container");
+  if (container) {
+    container.scrollTop = container.scrollHeight;
+  }
+}
+
+// Enviar mensaje
+function sendChatMessage(e) {
+  e.preventDefault();
+  const input = document.getElementById("chat-text-input");
+  const text = input.value.trim();
+  if (!text) return;
+
+  saveNickname();
+  
+  // Color aleatorio para este mensaje
+  const color = splatPalette[Math.floor(Math.random() * splatPalette.length)];
+
+  chatMessagesRef.push({
+    user: userNick,
+    text: text,
+    color: color,
+    timestamp: firebase.database.ServerValue.TIMESTAMP
+  });
+
+  input.value = "";
+  playSplatSound();
+}
+
+// Escuchar mensajes en tiempo real (limitado a los últimos 35)
+chatMessagesRef.limitToLast(35).on("child_added", (snapshot) => {
+  const data = snapshot.val();
+  const container = document.getElementById("chat-messages-container");
+  if (!container) return;
+
+  const msgDiv = document.createElement("div");
+  msgDiv.className = "chat-msg";
+  msgDiv.style.background = data.color || "#00f5d4";
+  msgDiv.style.color = "#07070a";
+
+  const userSpan = document.createElement("span");
+  userSpan.className = "chat-msg-user";
+  userSpan.textContent = data.user || "Inkling";
+
+  const textNode = document.createTextNode(data.text || "");
+
+  msgDiv.appendChild(userSpan);
+  msgDiv.appendChild(textNode);
+  container.appendChild(msgDiv);
+
+  scrollChatToBottom();
+
+  // Si el chat está cerrado y entra un mensaje nuevo, avisar con el badge
+  if (!chatOpen) {
+    const badge = document.getElementById("chat-unread-badge");
+    if (badge) badge.style.display = "inline-block";
+  }
+});
