@@ -523,8 +523,7 @@ if ("serviceWorker" in navigator) {
 const firebaseConfig = {
   apiKey: "AIzaSyDPx-QCtj_Oc0nKlV4q8TIu4JT0hAPqv5Q",
   authDomain: "splat-portal.firebaseapp.com",
-  databaseURL:
-    "https://splat-portal-default-rtdb.europe-west1.firebasedatabase.app",
+  databaseURL:"https://splat-portal-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "splat-portal",
   storageBucket: "splat-portal.firebasestorage.app",
   messagingSenderId: "133083337961",
