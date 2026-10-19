@@ -1,0 +1,28 @@
+backend:
+  name: github
+  repo: stevenjose/3ro-primaria  # Tu repositorio
+  branch: main                   # Cambia a "master" si tu rama principal se llama así
+
+media_folder: "assets"           # Carpeta para futuras imágenes
+
+collections:
+  - name: "configuracion"
+    label: "Gestión Escolar"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - name: "lista_examenes"
+        label: "Exámenes y Combates"
+        file: "examenes.json"
+        description: "Gestiona los próximos exámenes y márcalos como pasados"
+        fields:
+          - label: "Lista de Exámenes"
+            name: "examenes"
+            widget: "list"
+            fields:
+              - { label: "Fecha corta (ej. 24 OCT)", name: "fecha", widget: "string" }
+              - { label: "Materia", name: "materia", widget: "select", options: ["Matemáticas", "Inglés", "Medi", "Lengua"] }
+              - { label: "Título del Examen", name: "titulo", widget: "string" }
+              - { label: "Color de Tinta", name: "color", widget: "string", default: "#00f5d4" }
+              - { label: "Estado", name: "estado", widget: "select", options: ["proximo", "pasado"], default: "proximo" }
