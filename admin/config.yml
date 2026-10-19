@@ -21,7 +21,7 @@ collections:
             name: "examenes"
             widget: "list"
             fields:
-              - - { label: "Fecha del Examen", name: "fecha", widget: "datetime", format: "DD MMM YYYY", date_format: "DD MMM YYYY", time_format: false }
+              - { label: "Fecha del Examen", name: "fecha", widget: "datetime", format: "DD MMM YYYY", date_format: "DD MMM YYYY", time_format: false }
               - { label: "Materia", name: "materia", widget: "select", options: ["Matemáticas", "Inglés", "Medi", "Lengua"] }
               - { label: "Título del Examen", name: "titulo", widget: "string" }
               - { label: "Color de Tinta", name: "color", widget: "string", default: "#00f3ff" }
