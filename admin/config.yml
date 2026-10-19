@@ -21,8 +21,10 @@ collections:
             name: "examenes"
             widget: "list"
             fields:
-              - { label: "Fecha corta (ej. 24 OCT)", name: "fecha", widget: "string" }
+              fields:
+              - { label: "Fecha corta (ej. 28 Oct 2026)", name: "fecha", widget: "string" }
               - { label: "Materia", name: "materia", widget: "select", options: ["Matemáticas", "Inglés", "Medi", "Lengua"] }
               - { label: "Título del Examen", name: "titulo", widget: "string" }
-              - { label: "Color de Tinta", name: "color", widget: "string", default: "#00f5d4" }
+              - { label: "Color de Tinta", name: "color", widget: "string", default: "#00f3ff" }
               - { label: "Estado", name: "estado", widget: "select", options: ["proximo", "pasado"], default: "proximo" }
+              - { label: "Enlace Google Calendar (ej. 20261028T090000Z/20261028T100000Z)", name: "fechaCompleta", widget: "string", required: false }
