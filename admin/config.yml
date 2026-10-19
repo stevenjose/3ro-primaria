@@ -1,9 +1,9 @@
 backend:
   name: github
-  repo: stevenjose/3ro-primaria  # Tu repositorio
-  branch: main                   # Cambia a "master" si tu rama principal se llama así
+  repo: stevenjose/3ro-primaria
+  branch: main
 
-media_folder: "assets"           # Carpeta para futuras imágenes
+media_folder: "assets"
 
 collections:
   - name: "configuracion"
@@ -21,9 +21,29 @@ collections:
             name: "examenes"
             widget: "list"
             fields:
-              - { label: "Fecha del Examen", name: "fecha", widget: "datetime", format: "DD MMM YYYY", date_format: "DD MMM YYYY", time_format: false }
-              - { label: "Materia", name: "materia", widget: "select", options: ["Matemáticas", "Inglés", "Medi", "Lengua"] }
-              - { label: "Título del Examen", name: "titulo", widget: "string" }
-              - { label: "Color de Tinta", name: "color", widget: "string", default: "#00f3ff" }
-              - { label: "Estado", name: "estado", widget: "select", options: ["proximo", "pasado"], default: "proximo" }
-              - { label: "Enlace Google Calendar (ej. 20261028T090000Z/20261028T100000Z)", name: "fechaCompleta", widget: "string", required: false }
+              - label: "Fecha del Examen"
+                name: "fecha"
+                widget: "datetime"
+                format: "DD MMM YYYY"
+                date_format: "DD MMM YYYY"
+                time_format: false
+              - label: "Materia"
+                name: "materia"
+                widget: "select"
+                options: ["Matemáticas", "Inglés", "Medi", "Lengua"]
+              - label: "Título del Examen"
+                name: "titulo"
+                widget: "string"
+              - label: "Color de Tinta"
+                name: "color"
+                widget: "string"
+                default: "#00f3ff"
+              - label: "Estado"
+                name: "estado"
+                widget: "select"
+                options: ["proximo", "pasado"]
+                default: "proximo"
+              - label: "Enlace Google Calendar"
+                name: "fechaCompleta"
+                widget: "string"
+                required: false
