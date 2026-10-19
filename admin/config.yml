@@ -21,7 +21,6 @@ collections:
             name: "examenes"
             widget: "list"
             fields:
-              fields:
               - { label: "Fecha corta (ej. 28 Oct 2026)", name: "fecha", widget: "string" }
               - { label: "Materia", name: "materia", widget: "select", options: ["Matemáticas", "Inglés", "Medi", "Lengua"] }
               - { label: "Título del Examen", name: "titulo", widget: "string" }
