@@ -42,11 +42,15 @@
     "titulo": "Medi",
     "icono": "fa-solid fa-earth-americas",
     "colorVar": "var(--neon-pink)",
-    "descripcion": "Guías y test interactivos de la Unidad 3 para afianzar conceptos clave de forma visual y sencilla.",
+    "descripcion": "Guías y exámenes interactivos en català per repassar els ecosistemes i altres unitats de Medi.",
     "enlaces": [
       {
         "texto": "▶ ACCEDER UNIDAD 3",
         "url": "https://stevenjose.github.io/unidad-3-medi-pro/"
+      },
+      {
+        "texto": "🌿 EXAMEN UNIDAD 5: ECOSISTEMES",
+        "url": "https://stevenjose.github.io/unidad-cinco-medi/"
       }
     ]
   },
